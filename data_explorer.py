@@ -3,7 +3,10 @@ import json
 import traceback
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, count, countDistinct, isnan, when, min as spark_min, max as spark_max
+from pyspark.sql.functions import (
+    col, count, countDistinct, isnan, when, min as spark_min, max as spark_max,
+    split, explode, length, lower, size
+)
 from pyspark.sql.types import StringType, IntegerType, LongType, DoubleType, BooleanType
 
 
@@ -137,19 +140,53 @@ def analyze_continuous(df, column, num_bins = 10):
     return result
 
 def analyze_text(df, column):
-    # Just get a count of non-null values for now
-    result = {
-        "non_null_count": df.filter(col(column).isNotNull()).count()
-    }
-    
-    return result
+    """Analyze a text column with word count information."""
+    try:
 
-def analyze_column(df, column, col_type):
+        df_filtered = df.filter(col(column).isNotNull())
 
+        if df_filtered.count() == 0:
+            return {"non_null_count": 0}
+        
+        non_null_count = df_filtered.count()
+
+        words_df = df_filtered.select(
+            explode(
+                split(lower(col(column)), r'\W+')
+            ).alias("word")
+        )
+        # Count non-empty words
+        words_df = words_df.filter(length(col("word")) > 0)
+        # Count word frequencies
+        word_counts = words_df.groupby("word").count().orderBy("count", ascending=False)
+        # Get top words
+        top_words = word_counts.limit(20).collect()
+
+        # count total words
+        total_words = words_df.count()
+        unique_words = word_counts.count()
+
+        result  = {
+            "non_null_count": non_null_count,
+            "total_words": total_words,
+            "unique_words": unique_words,
+            "top_words": {row["word"]: row["count"] for row in top_words}
+        }
+
+        return result
+    except Exception as e:
+        print(f"Error analyzing text column {column}: {e}")
+        return {
+            "non_null_count": df.filter(col(column).isNotNull()).count(),
+            "analysis_error": str(e)
+        }
+
+
+def analyze_column(df, column, col_type, num_bins=10):
     if col_type in [CATEGORICAL, DISCRETE]:
         return analyze_categorical_discrete(df, column)
     elif col_type == CONTINUOUS:
-        return analyze_continuous(df, column)
+        return analyze_continuous(df, column, num_bins)
     elif col_type == TEXT:
         return analyze_text(df, column)
     else:
@@ -157,7 +194,7 @@ def analyze_column(df, column, col_type):
 
 def save_json(data, output_path):
     with open(output_path, 'w') as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, indent=4)
 
 
 def main():

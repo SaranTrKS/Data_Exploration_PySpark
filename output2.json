@@ -1,334 +1,430 @@
 {
-  "metadata": {
-    "row_count": 1309,
-    "column_count": 14
-  },
-  "columns": {
-    "pclass": {
-      "type": "categorical",
-      "missing_count": 0,
-      "analysis": {
-        "distinct_count": 3,
-        "value_frequencies": {
-          "3": 709,
-          "1": 323,
-          "2": 277
+    "metadata": {
+        "row_count": 1309,
+        "column_count": 14
+    },
+    "columns": {
+        "pclass": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 3,
+                "value_frequencies": {
+                    "3": 709,
+                    "1": 323,
+                    "2": 277
+                }
+            }
+        },
+        "survived": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 2,
+                "value_frequencies": {
+                    "0": 809,
+                    "1": 500
+                }
+            }
+        },
+        "name": {
+            "type": "text",
+            "missing_count": 0,
+            "analysis": {
+                "non_null_count": 1309,
+                "total_words": 5382,
+                "unique_words": 1951,
+                "top_words": {
+                    "mr": 763,
+                    "miss": 260,
+                    "mrs": 201,
+                    "william": 87,
+                    "john": 72,
+                    "master": 61,
+                    "henry": 49,
+                    "charles": 40,
+                    "james": 38,
+                    "george": 37,
+                    "thomas": 36,
+                    "joseph": 31,
+                    "mary": 30,
+                    "edward": 28,
+                    "elizabeth": 25,
+                    "johan": 22,
+                    "frederick": 21,
+                    "arthur": 20,
+                    "samuel": 20,
+                    "alexander": 20
+                }
+            }
+        },
+        "sex": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 3,
+                "value_frequencies": {
+                    "male": 842,
+                    "female": 466,
+                    "2.3": 1
+                }
+            }
+        },
+        "age": {
+            "type": "continuous",
+            "missing_count": 263,
+            "analysis": {
+                "min": 0.1667,
+                "max": 80.0,
+                "histogram": [
+                    {
+                        "bin_start": 0.1667,
+                        "bin_end": 8.15003,
+                        "count": 72
+                    },
+                    {
+                        "bin_start": 8.15003,
+                        "bin_end": 16.13336,
+                        "count": 62
+                    },
+                    {
+                        "bin_start": 16.13336,
+                        "bin_end": 24.11669,
+                        "count": 274
+                    },
+                    {
+                        "bin_start": 24.11669,
+                        "bin_end": 32.10002,
+                        "count": 250
+                    },
+                    {
+                        "bin_start": 32.10002,
+                        "bin_end": 40.083349999999996,
+                        "count": 161
+                    },
+                    {
+                        "bin_start": 40.083349999999996,
+                        "bin_end": 48.06668,
+                        "count": 108
+                    },
+                    {
+                        "bin_start": 48.06668,
+                        "bin_end": 56.05000999999999,
+                        "count": 65
+                    },
+                    {
+                        "bin_start": 56.05000999999999,
+                        "bin_end": 64.03334,
+                        "count": 41
+                    },
+                    {
+                        "bin_start": 64.03334,
+                        "bin_end": 72.01667,
+                        "count": 10
+                    },
+                    {
+                        "bin_start": 72.01667,
+                        "bin_end": 80.0,
+                        "count": 3
+                    }
+                ]
+            }
+        },
+        "sibsp": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 7,
+                "value_frequencies": {
+                    "0": 891,
+                    "1": 319,
+                    "2": 42,
+                    "4": 22,
+                    "3": 20,
+                    "8": 9,
+                    "5": 6
+                }
+            }
+        },
+        "parch": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 8,
+                "value_frequencies": {
+                    "0": 1002,
+                    "1": 170,
+                    "2": 113,
+                    "3": 8,
+                    "5": 6,
+                    "4": 6,
+                    "6": 2,
+                    "9": 2
+                }
+            }
+        },
+        "ticket": {
+            "type": "text",
+            "missing_count": 0,
+            "analysis": {
+                "non_null_count": 1309,
+                "total_words": 1946,
+                "unique_words": 954,
+                "top_words": {
+                    "c": 103,
+                    "pc": 92,
+                    "a": 88,
+                    "o": 45,
+                    "soton": 28,
+                    "5": 28,
+                    "sc": 25,
+                    "p": 22,
+                    "ca": 22,
+                    "ston": 22,
+                    "s": 22,
+                    "w": 19,
+                    "paris": 19,
+                    "2": 17,
+                    "q": 16,
+                    "f": 12,
+                    "4": 11,
+                    "2343": 11,
+                    "o2": 10,
+                    "oq": 9
+                }
+            }
+        },
+        "fare": {
+            "type": "continuous",
+            "missing_count": 1,
+            "analysis": {
+                "min": 0.0,
+                "max": 512.3292,
+                "histogram": [
+                    {
+                        "bin_start": 0.0,
+                        "bin_end": 51.23292,
+                        "count": 1070
+                    },
+                    {
+                        "bin_start": 51.23292,
+                        "bin_end": 102.46584,
+                        "count": 154
+                    },
+                    {
+                        "bin_start": 102.46584,
+                        "bin_end": 153.69876,
+                        "count": 42
+                    },
+                    {
+                        "bin_start": 153.69876,
+                        "bin_end": 204.93168,
+                        "count": 4
+                    },
+                    {
+                        "bin_start": 204.93168,
+                        "bin_end": 256.1646,
+                        "count": 21
+                    },
+                    {
+                        "bin_start": 256.1646,
+                        "bin_end": 307.39752,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 307.39752,
+                        "bin_end": 358.63044,
+                        "count": 0
+                    },
+                    {
+                        "bin_start": 358.63044,
+                        "bin_end": 409.86336,
+                        "count": 0
+                    },
+                    {
+                        "bin_start": 409.86336,
+                        "bin_end": 461.09628,
+                        "count": 0
+                    },
+                    {
+                        "bin_start": 461.09628,
+                        "bin_end": 512.3292,
+                        "count": 4
+                    }
+                ]
+            }
+        },
+        "cabin": {
+            "type": "text",
+            "missing_count": 1014,
+            "analysis": {
+                "non_null_count": 295,
+                "total_words": 356,
+                "unique_words": 202,
+                "top_words": {
+                    "f": 8,
+                    "c27": 6,
+                    "c25": 6,
+                    "c23": 6,
+                    "b66": 5,
+                    "g6": 5,
+                    "b63": 5,
+                    "b57": 5,
+                    "b59": 5,
+                    "f4": 4,
+                    "f2": 4,
+                    "b98": 4,
+                    "c26": 4,
+                    "d": 4,
+                    "f33": 4,
+                    "c22": 4,
+                    "b96": 4,
+                    "c78": 4,
+                    "e34": 3,
+                    "b53": 3
+                }
+            }
+        },
+        "embarked": {
+            "type": "categorical",
+            "missing_count": 2,
+            "analysis": {
+                "distinct_count": 3,
+                "value_frequencies": {
+                    "S": 914,
+                    "C": 270,
+                    "Q": 123,
+                    "None": 2
+                }
+            }
+        },
+        "boat": {
+            "type": "categorical",
+            "missing_count": 823,
+            "analysis": {
+                "distinct_count": 27,
+                "value_frequencies": {
+                    "None": 823,
+                    "13": 39,
+                    "C": 38,
+                    "15": 37,
+                    "14": 33,
+                    "4": 31,
+                    "10": 29,
+                    "5": 27,
+                    "3": 26,
+                    "11": 25,
+                    "9": 25,
+                    "7": 23,
+                    "8": 23,
+                    "16": 23,
+                    "6": 20,
+                    "D": 20,
+                    "12": 19,
+                    "2": 13,
+                    "A": 11,
+                    "B": 9,
+                    "1": 5,
+                    "13 15": 2,
+                    "5 7": 2,
+                    "C D": 2,
+                    "15 16": 1,
+                    "5 9": 1,
+                    "13 15 B": 1,
+                    "8 10": 1
+                }
+            }
+        },
+        "body": {
+            "type": "continuous",
+            "missing_count": 1188,
+            "analysis": {
+                "min": 1,
+                "max": 328,
+                "histogram": [
+                    {
+                        "bin_start": 1.0,
+                        "bin_end": 33.7,
+                        "count": 12
+                    },
+                    {
+                        "bin_start": 33.7,
+                        "bin_end": 66.4,
+                        "count": 14
+                    },
+                    {
+                        "bin_start": 66.4,
+                        "bin_end": 99.10000000000001,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 99.10000000000001,
+                        "bin_end": 131.8,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 131.8,
+                        "bin_end": 164.5,
+                        "count": 10
+                    },
+                    {
+                        "bin_start": 164.5,
+                        "bin_end": 197.20000000000002,
+                        "count": 16
+                    },
+                    {
+                        "bin_start": 197.20000000000002,
+                        "bin_end": 229.90000000000003,
+                        "count": 5
+                    },
+                    {
+                        "bin_start": 229.90000000000003,
+                        "bin_end": 262.6,
+                        "count": 12
+                    },
+                    {
+                        "bin_start": 262.6,
+                        "bin_end": 295.3,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 295.3,
+                        "bin_end": 328,
+                        "count": 13
+                    }
+                ]
+            }
+        },
+        "home": {
+            "type": "text",
+            "missing_count": 564,
+            "analysis": {
+                "non_null_count": 745,
+                "total_words": 2228,
+                "unique_words": 464,
+                "top_words": {
+                    "ny": 175,
+                    "new": 123,
+                    "york": 116,
+                    "england": 99,
+                    "london": 44,
+                    "sweden": 38,
+                    "pa": 38,
+                    "nj": 37,
+                    "ma": 34,
+                    "mi": 33,
+                    "cornwall": 30,
+                    "il": 30,
+                    "ireland": 27,
+                    "paris": 27,
+                    "pq": 25,
+                    "on": 25,
+                    "montreal": 24,
+                    "oh": 24,
+                    "co": 23,
+                    "mn": 21
+                }
+            }
         }
-      }
-    },
-    "survived": {
-      "type": "categorical",
-      "missing_count": 0,
-      "analysis": {
-        "distinct_count": 2,
-        "value_frequencies": {
-          "0": 809,
-          "1": 500
-        }
-      }
-    },
-    "name": {
-      "type": "text",
-      "missing_count": 0,
-      "analysis": {
-        "non_null_count": 1309
-      }
-    },
-    "sex": {
-      "type": "categorical",
-      "missing_count": 0,
-      "analysis": {
-        "distinct_count": 3,
-        "value_frequencies": {
-          "male": 842,
-          "female": 466,
-          "2.3": 1
-        }
-      }
-    },
-    "age": {
-      "type": "continuous",
-      "missing_count": 263,
-      "analysis": {
-        "min": 0.1667,
-        "max": 80.0,
-        "histogram": [
-          {
-            "bin_start": 0.1667,
-            "bin_end": 8.15003,
-            "count": 72
-          },
-          {
-            "bin_start": 8.15003,
-            "bin_end": 16.13336,
-            "count": 62
-          },
-          {
-            "bin_start": 16.13336,
-            "bin_end": 24.11669,
-            "count": 274
-          },
-          {
-            "bin_start": 24.11669,
-            "bin_end": 32.10002,
-            "count": 250
-          },
-          {
-            "bin_start": 32.10002,
-            "bin_end": 40.083349999999996,
-            "count": 161
-          },
-          {
-            "bin_start": 40.083349999999996,
-            "bin_end": 48.06668,
-            "count": 108
-          },
-          {
-            "bin_start": 48.06668,
-            "bin_end": 56.05000999999999,
-            "count": 65
-          },
-          {
-            "bin_start": 56.05000999999999,
-            "bin_end": 64.03334,
-            "count": 41
-          },
-          {
-            "bin_start": 64.03334,
-            "bin_end": 72.01667,
-            "count": 10
-          },
-          {
-            "bin_start": 72.01667,
-            "bin_end": 80.0,
-            "count": 3
-          }
-        ]
-      }
-    },
-    "sibsp": {
-      "type": "categorical",
-      "missing_count": 0,
-      "analysis": {
-        "distinct_count": 7,
-        "value_frequencies": {
-          "0": 891,
-          "1": 319,
-          "2": 42,
-          "4": 22,
-          "3": 20,
-          "8": 9,
-          "5": 6
-        }
-      }
-    },
-    "parch": {
-      "type": "categorical",
-      "missing_count": 0,
-      "analysis": {
-        "distinct_count": 8,
-        "value_frequencies": {
-          "0": 1002,
-          "1": 170,
-          "2": 113,
-          "3": 8,
-          "5": 6,
-          "4": 6,
-          "6": 2,
-          "9": 2
-        }
-      }
-    },
-    "ticket": {
-      "type": "text",
-      "missing_count": 0,
-      "analysis": {
-        "non_null_count": 1309
-      }
-    },
-    "fare": {
-      "type": "continuous",
-      "missing_count": 1,
-      "analysis": {
-        "min": 0.0,
-        "max": 512.3292,
-        "histogram": [
-          {
-            "bin_start": 0.0,
-            "bin_end": 51.23292,
-            "count": 1070
-          },
-          {
-            "bin_start": 51.23292,
-            "bin_end": 102.46584,
-            "count": 154
-          },
-          {
-            "bin_start": 102.46584,
-            "bin_end": 153.69876,
-            "count": 42
-          },
-          {
-            "bin_start": 153.69876,
-            "bin_end": 204.93168,
-            "count": 4
-          },
-          {
-            "bin_start": 204.93168,
-            "bin_end": 256.1646,
-            "count": 21
-          },
-          {
-            "bin_start": 256.1646,
-            "bin_end": 307.39752,
-            "count": 13
-          },
-          {
-            "bin_start": 307.39752,
-            "bin_end": 358.63044,
-            "count": 0
-          },
-          {
-            "bin_start": 358.63044,
-            "bin_end": 409.86336,
-            "count": 0
-          },
-          {
-            "bin_start": 409.86336,
-            "bin_end": 461.09628,
-            "count": 0
-          },
-          {
-            "bin_start": 461.09628,
-            "bin_end": 512.3292,
-            "count": 4
-          }
-        ]
-      }
-    },
-    "cabin": {
-      "type": "text",
-      "missing_count": 1014,
-      "analysis": {
-        "non_null_count": 295
-      }
-    },
-    "embarked": {
-      "type": "categorical",
-      "missing_count": 2,
-      "analysis": {
-        "distinct_count": 3,
-        "value_frequencies": {
-          "S": 914,
-          "C": 270,
-          "Q": 123,
-          "None": 2
-        }
-      }
-    },
-    "boat": {
-      "type": "categorical",
-      "missing_count": 823,
-      "analysis": {
-        "distinct_count": 27,
-        "value_frequencies": {
-          "None": 823,
-          "13": 39,
-          "C": 38,
-          "15": 37,
-          "14": 33,
-          "4": 31,
-          "10": 29,
-          "5": 27,
-          "3": 26,
-          "11": 25,
-          "9": 25,
-          "7": 23,
-          "8": 23,
-          "16": 23,
-          "6": 20,
-          "D": 20,
-          "12": 19,
-          "2": 13,
-          "A": 11,
-          "B": 9,
-          "1": 5,
-          "13 15": 2,
-          "5 7": 2,
-          "C D": 2,
-          "15 16": 1,
-          "5 9": 1,
-          "13 15 B": 1,
-          "8 10": 1
-        }
-      }
-    },
-    "body": {
-      "type": "continuous",
-      "missing_count": 1188,
-      "analysis": {
-        "min": 1,
-        "max": 328,
-        "histogram": [
-          {
-            "bin_start": 1.0,
-            "bin_end": 33.7,
-            "count": 12
-          },
-          {
-            "bin_start": 33.7,
-            "bin_end": 66.4,
-            "count": 14
-          },
-          {
-            "bin_start": 66.4,
-            "bin_end": 99.10000000000001,
-            "count": 13
-          },
-          {
-            "bin_start": 99.10000000000001,
-            "bin_end": 131.8,
-            "count": 13
-          },
-          {
-            "bin_start": 131.8,
-            "bin_end": 164.5,
-            "count": 10
-          },
-          {
-            "bin_start": 164.5,
-            "bin_end": 197.20000000000002,
-            "count": 16
-          },
-          {
-            "bin_start": 197.20000000000002,
-            "bin_end": 229.90000000000003,
-            "count": 5
-          },
-          {
-            "bin_start": 229.90000000000003,
-            "bin_end": 262.6,
-            "count": 12
-          },
-          {
-            "bin_start": 262.6,
-            "bin_end": 295.3,
-            "count": 13
-          },
-          {
-            "bin_start": 295.3,
-            "bin_end": 328,
-            "count": 13
-          }
-        ]
-      }
-    },
-    "home": {
-      "type": "text",
-      "missing_count": 564,
-      "analysis": {
-        "non_null_count": 745
-      }
     }
-  }
 }
