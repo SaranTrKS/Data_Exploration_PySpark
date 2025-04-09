@@ -3,8 +3,16 @@ import json
 import traceback
 
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, count, countDistinct, isnan, when
+from pyspark.sql.functions import col, count, countDistinct, isnan, when, min as spark_min, max as spark_max
 from pyspark.sql.types import StringType, IntegerType, LongType, DoubleType, BooleanType
+
+
+
+##### CONSTANTS ####
+CATEGORICAL = "categorical"
+DISCRETE = "discrete"
+CONTINUOUS = "continuous"
+TEXT = "text"
 
 
 def create_spark_session():
@@ -25,12 +33,6 @@ def calculate_missing_values(df):
     return missing_counts
 
 def detect_column_types(df):
-
-    CATEGORICAL = "categorical"
-    DISCRETE = "discrete"
-    CONTINUOUS = "continuous"
-    TEXT = "text"
-
     column_types = {}
 
     for column in df.columns:
@@ -38,7 +40,6 @@ def detect_column_types(df):
         spark_type = df.schema[column].dataType
 
         if isinstance(spark_type, StringType):
-
             distinct_count = df.select(countDistinct(col(column))).collect()[0][0]
             total_rows = df.count()
 
@@ -48,10 +49,8 @@ def detect_column_types(df):
                 column_types[column] = TEXT
 
         elif isinstance(spark_type, (IntegerType, LongType)):
-           
             distinct_count = df.select(countDistinct(col(column))).collect()[0][0]
             total_rows = df.count()
-            
             # Integer columns with few unique values could be categorical or discrete
             if distinct_count <= 20:
                 # Check if this looks like a category code
@@ -69,17 +68,68 @@ def detect_column_types(df):
         
         elif isinstance(spark_type, DoubleType):
             column_types[column] = CONTINUOUS
+
         elif isinstance(spark_type, BooleanType):
             column_types[column] = CATEGORICAL
         
         else:
             column_types[column] = CATEGORICAL # default to categorical for unknown types
 
-    
     return column_types
         
+def analyze_categorical_discrete(df, column):
+    """Analyze a categorical or discrete column."""
+    # Get value frequencies
+    value_counts = df.groupBy(column).count().orderBy("count", ascending=False)
+    
+    # Convert to dictionary (limit to top 100 values for performance)
+    values_with_counts = value_counts.limit(100).collect()
+    result = {
+        "distinct_count": df.select(countDistinct(col(column))).collect()[0][0],
+        "value_frequencies": {str(row[0]): row[1] for row in values_with_counts}
+    }
+    
+    return result
 
+def analyze_continuous(df, column):
+    """Analyze a continuous column."""
+    # Get min, max, mean, stddev
+    stats = df.select(
+        spark_min(column).alias("min"),
+        spark_max(column).alias("max"),
+        count(column).alias("count")
+    ).collect()[0]
 
+    # Get histogram (limit to 100 bins for performance)
+    histogram = df.select(column).rdd.flatMap(lambda x: x).histogram(100)
+
+    result = {
+        "min": stats[0],
+        "max": stats[1],
+        "count": stats[2],
+        "histogram": histogram
+    }
+    
+    return result
+
+def analyze_text(df, column):
+    # Just get a count of non-null values for now
+    result = {
+        "non_null_count": df.filter(col(column).isNotNull()).count()
+    }
+    
+    return result
+
+def analyze_column(df, column, col_type):
+
+    if col_type in [CATEGORICAL, DISCRETE]:
+        return analyze_categorical_discrete(df, column)
+    elif col_type == CONTINUOUS:
+        return analyze_continuous(df, column)
+    elif col_type == TEXT:
+        return analyze_text(df, column)
+    else:
+        return {}
 
 def save_json(data, output_path):
     with open(output_path, 'w') as f:
@@ -107,12 +157,17 @@ def main():
         missing_values = calculate_missing_values(df)
 
         column_types = detect_column_types(df)
+
         # breakpoint()
         column_info = {}
         for column in df.columns:
+            col_type = column_types[column]
+            analysis = analyze_column(df, column, col_type)
+
             column_info[column] = {
-                "type": column_types[column],
-                "missing_count": missing_values[column]
+                "type": col_type,
+                "missing_count": missing_values[column],
+                "analysis": analysis
             }
 
         report = {
