@@ -1,0 +1,26 @@
+import sys
+import json
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, count, isnan, when
+
+def create_spark_session():
+    return SparkSession.builder.appName("PySpark Data Explorer").getOrCreate()
+
+
+def read_csv(spark, file_path):
+    return spark.read.option("header", "true").option("inferSchema", "true").csv(file_path)
+
+
+def calculate_missing_values(df):
+    missing_counts = {}
+    
+    for column in df.columns:
+        null_count = df.filter( col(column).isNull() |  isnan(col(column)) | (col(column) == "")).count()
+        missing_counts[column] = null_count
+    
+    return missing_counts
+
+def save_json(data, output_path):
+    with open(output_path, 'w') as f:
+        json.dump(data, f, indent=2)
+
