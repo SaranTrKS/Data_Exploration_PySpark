@@ -3,7 +3,7 @@ import traceback
 
 import sys
 import json
-import argparse
+from argparse import ArgumentParser, ArgumentTypeError
 import logging
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
@@ -34,55 +34,86 @@ def read_csv(spark, args):
 
 def calculate_missing_values(df):
     missing_counts = {}
-    
-    for column in df.columns:
-        null_count = df.filter( col(column).isNull() |  isnan(col(column)) | (col(column) == "")).count()
-        missing_counts[column] = null_count
-    
+    try:
+        for column in df.columns:
+            null_count = df.filter( col(column).isNull() |  isnan(col(column)) | (col(column) == "")).count()
+            missing_counts[column] = null_count
+    except Exception as e:
+        logging.warning(f"Error calculating missing values for column '{column}': {str(e)}")
+        # Default to counting just nulls if the more complex condition fails
+        missing_counts[column] = df.filter(col(column).isNull()).count()
+
     return missing_counts
 
 def detect_column_types(df):
     column_types = {}
+    logger = logging.getLogger("DataExplorer")
 
     for column in df.columns:
 
-        spark_type = df.schema[column].dataType
+        try:
 
-        if isinstance(spark_type, StringType):
-            distinct_count = df.select(countDistinct(col(column))).collect()[0][0]
-            total_rows = df.count()
+            spark_type = df.schema[column].dataType
 
-            if distinct_count <= 20 or (total_rows > 0 and distinct_count / total_rows < 0.1):
-                column_types[column] = CATEGORICAL
-            else:
-                column_types[column] = TEXT
+            if isinstance(spark_type, StringType):
+                distinct_count = df.select(countDistinct(col(column))).collect()[0][0]
+                total_rows = df.count()
 
-        elif isinstance(spark_type, (IntegerType, LongType)):
-            distinct_count = df.select(countDistinct(col(column))).collect()[0][0]
-            total_rows = df.count()
-            # Integer columns with few unique values could be categorical or discrete
-            if distinct_count <= 20:
-                # Check if this looks like a category code
-                # Column names containing 'id', 'code', 'type', 'category', 'class' hint at categorical
-                column_lower = column.lower()
-                categorical_hints = ['id', 'code', 'type', 'category', 'class', 'status', 'level', 'grade']
-                
-                if any(hint in column_lower for hint in categorical_hints) or distinct_count / total_rows < 0.1:
+                if distinct_count <= 20 or (total_rows > 0 and distinct_count / total_rows < 0.1):
                     column_types[column] = CATEGORICAL
                 else:
-                    column_types[column] = DISCRETE
-            else:
-                # Many distinct values, likely continuous
-                column_types[column] = CONTINUOUS
-        
-        elif isinstance(spark_type, DoubleType):
-            column_types[column] = CONTINUOUS
+                    try:
+                        # Calculate average word count per value
+                        word_counts = df.select(size(split(col(column), r'\s+')).alias("words"))
+                        avg_words = word_counts.agg({"words": "avg"}).collect()[0][0] or 0
+                        
+                        # Calculate average string length
+                        avg_length = df.select(length(col(column)).alias("length")).agg({"length": "avg"}).collect()[0][0] or 0
+                        
+                        # If the average contains multiple words or is long, classify as text
+                        if avg_words >= 1.5 or avg_length > 100:
+                            column_types[column] = TEXT
+                        else:
+                            column_types[column] = CATEGORICAL
+                    except Exception as e:
+                        logger.warning(f"Error calculating text metrics for '{column}': {str(e)}")
+                        # Default to categorical if text detection fails
+                        column_types[column] = CATEGORICAL
 
-        elif isinstance(spark_type, BooleanType):
+            # Numeric Columns
+            elif isinstance(spark_type, (IntegerType, LongType)):
+                distinct_count = df.select(countDistinct(col(column))).collect()[0][0]
+                total_rows = df.count()
+                # Integer columns with few unique values could be categorical or discrete
+                if distinct_count <= 20:
+                    # Check if this looks like a category code
+                    # Column names containing 'id', 'code', 'type', 'category', 'class' hint at categorical
+                    column_lower = column.lower()
+                    categorical_hints = ['id', 'code', 'type', 'category', 'class', 'status', 'level', 'grade']
+                    
+                    if any(hint in column_lower for hint in categorical_hints) or distinct_count / total_rows < 0.1:
+                        column_types[column] = CATEGORICAL
+                    else:
+                        column_types[column] = DISCRETE
+                else:
+                    # Many distinct values, likely continuous
+                    column_types[column] = CONTINUOUS
+            
+            elif isinstance(spark_type, DoubleType):
+                column_types[column] = CONTINUOUS
+
+            elif isinstance(spark_type, BooleanType):
+                column_types[column] = CATEGORICAL
+            
+            else:
+                column_types[column] = CATEGORICAL # default to categorical for unknown types
+
+            logger.info(f"Column '{column}' classified as {column_types[column]}")
+
+        except Exception as e:
+            logger.error(f"Error detecting type for column '{column}': {str(e)}")
+            # Default to CATEGORICAL for any errors
             column_types[column] = CATEGORICAL
-        
-        else:
-            column_types[column] = CATEGORICAL # default to categorical for unknown types
 
     return column_types
         
