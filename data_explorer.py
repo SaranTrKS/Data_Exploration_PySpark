@@ -1,14 +1,16 @@
-import sys
-import json
+
 import traceback
 
+import sys
+import json
+import argparse
+import logging
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     col, count, countDistinct, isnan, when, min as spark_min, max as spark_max,
     split, explode, length, lower, size
 )
 from pyspark.sql.types import StringType, IntegerType, LongType, DoubleType, BooleanType
-
 
 
 ##### CONSTANTS ####
@@ -22,8 +24,12 @@ def create_spark_session():
     return SparkSession.builder.appName("PySpark Data Explorer").getOrCreate()
 
 
-def read_csv(spark, file_path):
-    return spark.read.option("header", "true").option("inferSchema", "true").csv(file_path)
+def read_csv(spark, args):
+    df = spark.read.option("header", str(args.header).lower()) \
+                       .option("delimiter", args.delimiter) \
+                       .option("inferSchema", "true") \
+                       .csv(args.input_file)
+    return df
 
 
 def calculate_missing_values(df):
@@ -197,31 +203,70 @@ def save_json(data, output_path):
         json.dump(data, f, indent=4)
 
 
+def is_csv_file(filepath):
+    if not filepath.lower().endswith('.csv'):
+        raise ArgumentTypeError(f"{filepath} is not a valid CSV file.")
+    return filepath
+
+def is_json_file(filepath):
+    if not filepath.lower().endswith('.json'):
+        raise ArgumentTypeError(f"{filepath} is not a valid JSON file.")
+    return filepath
+
+
 def main():
 
-    if len(sys.argv) != 3:
-        print("Usage: python mvp_explorer.py <input_csv> <output_json>")
-        sys.exit(1)
-    
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
+    parser = ArgumentParser()
+    parser.add_argument("-i", "--input-file", type=is_csv_file, dest="input_file", required=True, help="Path to the input CSV file")
+    parser.add_argument("-o", "--output-file", type=is_json_file, dest="output_file", required=True, help="Path to save the JSON report")
+    parser.add_argument("-b", "--num-bins", type=int, dest="num_bins", default=10, help="Number of bins for histograms (default: 10)")
+
+    parser.add_argument("--header", dest="header", action="store_true", help="Specify if the CSV has a header row")
+    parser.add_argument("--no-header", dest="header", action="store_false", help="Specify if the CSV does not have a header row")
+    parser.set_defaults(header=True)
+    parser.add_argument("-d", "--delimiter", type=str, dest="delimiter", default=",", help="CSV delimiter character (default: ',')")
+    parser.add_argument("-s", "--sample-size", type=int, dest="sample_size", default=1000, help="Number of rows to sample for analysis (default: 1000)")
+    parser.add_argument("-D", "--debug", action="store_true", dest="debug", help="Enable debug logging")
+
+    args = parser.parse_args()
+
+    # Set up logging
+    log_level = logging.DEBUG if args.debug else logging.INFO
+    logging.basicConfig(
+        level=log_level,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+    logger = logging.getLogger("DataExplorer")
 
     try:
 
+        logger.info(f"[Logger-Log] - Creating Spark session")
         spark = create_spark_session()
 
-        df = read_csv(spark, input_file)
+        logger.info(f"[Logger-Log] - Reading CSV file: {args.input_file}")
+        df = read_csv(spark, args)
 
+        # Sample if needed
+        if args.sample_size > 0 and df.count() > args.sample_size:
+            logger.info(f"[Logger-Log] - Sampling {args.sample_size} rows for analysis")
+            df_sample = df.sample(fraction=args.sample_size/df.count(), seed=42)
+        else:
+            df_sample = df
+
+        logger.info("C[Logger-Log] - alculating row and column counts")
         row_count = df.count()
         column_count = len(df.columns)
 
+        logger.info("C[Logger-Log] - alculating missing values")
         missing_values = calculate_missing_values(df)
 
-        column_types = detect_column_types(df)
+        logger.info("D[Logger-Log] - etecting column types")
+        column_types = detect_column_types(df_sample)
 
-        
+        logger.info("A[Logger-Log] - nalyzing columns")
         column_info = {}
         for column in df.columns:
+            logger.info(f"[Logger-Log] - Analyzing column: {column}")
             col_type = column_types[column]
             analysis = analyze_column(df, column, col_type)
 
@@ -239,17 +284,22 @@ def main():
             "columns": column_info
         }
 
+        output_file = args.output_file
+        logger.info(f"[Logger-Log] - Saving report to {output_file}")
         save_json(report, output_file)
-
         print(f"Report saved to {output_file}")
 
+        logger.info("A[Logger-Log] - nalysis completed successfully")
+
     except Exception as e:
+        logger.error(f"Error: {str(e)}", exc_info=True)
         print(f"An error occurred: {e}")
         traceback.print_exc(file=sys.stdout)
         sys.exit(1)
     finally:
         # breakpoint()
         if 'spark' in locals():
+            logger.info("S[Logger-Log] - topping Spark session")
             spark.stop()
 
 if __name__ == "__main__":
