@@ -1,0 +1,664 @@
+{
+    "metadata": {
+        "row_count": 1309,
+        "column_count": 14
+    },
+    "columns": {
+        "pclass": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 3,
+                "value_frequencies": {
+                    "3": 709,
+                    "1": 323,
+                    "2": 277
+                }
+            }
+        },
+        "survived": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 2,
+                "value_frequencies": {
+                    "0": 809,
+                    "1": 500
+                }
+            }
+        },
+        "name": {
+            "type": "text",
+            "missing_count": 0,
+            "analysis": {
+                "non_null_count": 1309,
+                "total_words": 5382,
+                "unique_words": 1951,
+                "top_words": {
+                    "mr": 763,
+                    "miss": 260,
+                    "mrs": 201,
+                    "william": 87,
+                    "john": 72,
+                    "master": 61,
+                    "henry": 49,
+                    "charles": 40,
+                    "james": 38,
+                    "george": 37,
+                    "thomas": 36,
+                    "joseph": 31,
+                    "mary": 30,
+                    "edward": 28,
+                    "elizabeth": 25,
+                    "johan": 22,
+                    "frederick": 21,
+                    "arthur": 20,
+                    "samuel": 20,
+                    "alexander": 20
+                }
+            }
+        },
+        "sex": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 3,
+                "value_frequencies": {
+                    "male": 842,
+                    "female": 466,
+                    "2.3": 1
+                }
+            }
+        },
+        "age": {
+            "type": "continuous",
+            "missing_count": 263,
+            "analysis": {
+                "min": 0.1667,
+                "max": 80.0,
+                "histogram": [
+                    {
+                        "bin_start": 0.1667,
+                        "bin_end": 8.15003,
+                        "count": 72
+                    },
+                    {
+                        "bin_start": 8.15003,
+                        "bin_end": 16.13336,
+                        "count": 62
+                    },
+                    {
+                        "bin_start": 16.13336,
+                        "bin_end": 24.11669,
+                        "count": 274
+                    },
+                    {
+                        "bin_start": 24.11669,
+                        "bin_end": 32.10002,
+                        "count": 250
+                    },
+                    {
+                        "bin_start": 32.10002,
+                        "bin_end": 40.083349999999996,
+                        "count": 161
+                    },
+                    {
+                        "bin_start": 40.083349999999996,
+                        "bin_end": 48.06668,
+                        "count": 108
+                    },
+                    {
+                        "bin_start": 48.06668,
+                        "bin_end": 56.05000999999999,
+                        "count": 65
+                    },
+                    {
+                        "bin_start": 56.05000999999999,
+                        "bin_end": 64.03334,
+                        "count": 41
+                    },
+                    {
+                        "bin_start": 64.03334,
+                        "bin_end": 72.01667,
+                        "count": 10
+                    },
+                    {
+                        "bin_start": 72.01667,
+                        "bin_end": 80.0,
+                        "count": 3
+                    }
+                ]
+            }
+        },
+        "sibsp": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 7,
+                "value_frequencies": {
+                    "0": 891,
+                    "1": 319,
+                    "2": 42,
+                    "4": 22,
+                    "3": 20,
+                    "8": 9,
+                    "5": 6
+                }
+            }
+        },
+        "parch": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 8,
+                "value_frequencies": {
+                    "0": 1002,
+                    "1": 170,
+                    "2": 113,
+                    "3": 8,
+                    "5": 6,
+                    "4": 6,
+                    "6": 2,
+                    "9": 2
+                }
+            }
+        },
+        "ticket": {
+            "type": "categorical",
+            "missing_count": 0,
+            "analysis": {
+                "distinct_count": 929,
+                "value_frequencies": {
+                    "CA. 2343": 11,
+                    "1601": 8,
+                    "CA 2144": 8,
+                    "PC 17608": 7,
+                    "S.O.C. 14879": 7,
+                    "347077": 7,
+                    "3101295": 7,
+                    "347082": 7,
+                    "347088": 6,
+                    "382652": 6,
+                    "113781": 6,
+                    "19950": 6,
+                    "PC 17757": 5,
+                    "16966": 5,
+                    "113503": 5,
+                    "W./C. 6608": 5,
+                    "4133": 5,
+                    "349909": 5,
+                    "220845": 5,
+                    "C.A. 2315": 4,
+                    "C.A. 34651": 4,
+                    "C.A. 33112": 4,
+                    "17421": 4,
+                    "36928": 4,
+                    "24160": 4,
+                    "230136": 4,
+                    "PC 17483": 4,
+                    "W./C. 6607": 4,
+                    "LINE": 4,
+                    "2666": 4,
+                    "SC/Paris 2123": 4,
+                    "12749": 4,
+                    "PC 17760": 4,
+                    "113760": 4,
+                    "PC 17755": 4,
+                    "363291": 3,
+                    "26360": 3,
+                    "19877": 3,
+                    "C.A. 2673": 3,
+                    "28220": 3,
+                    "239853": 3,
+                    "C 4001": 3,
+                    "110152": 3,
+                    "PC 17761": 3,
+                    "PC 17558": 3,
+                    "230080": 3,
+                    "C.A. 31029": 3,
+                    "2668": 3,
+                    "370129": 3,
+                    "S.C./PARIS 2079": 3,
+                    "F.C.C. 13529": 3,
+                    "315153": 3,
+                    "29106": 3,
+                    "2661": 3,
+                    "371110": 3,
+                    "C.A. 37671": 3,
+                    "347742": 3,
+                    "367226": 3,
+                    "PP 9549": 3,
+                    "2650": 3,
+                    "2653": 3,
+                    "248738": 3,
+                    "110413": 3,
+                    "C.A. 31921": 3,
+                    "PC 17756": 3,
+                    "SOTON/O.Q. 3101315": 3,
+                    "29103": 3,
+                    "PC 17572": 3,
+                    "345773": 3,
+                    "A/5. 851": 3,
+                    "35273": 3,
+                    "29750": 3,
+                    "2662": 3,
+                    "19928": 3,
+                    "33638": 3,
+                    "248727": 3,
+                    "A/4 48871": 3,
+                    "PC 17582": 3,
+                    "347080": 3,
+                    "13502": 3,
+                    "PC 17569": 3,
+                    "PC 17758": 3,
+                    "2678": 3,
+                    "11767": 3,
+                    "11668": 2,
+                    "349910": 2,
+                    "17453": 2,
+                    "7534": 2,
+                    "376566": 2,
+                    "347054": 2,
+                    "17464": 2,
+                    "364849": 2,
+                    "11813": 2,
+                    "231919": 2,
+                    "113509": 2,
+                    "370365": 2,
+                    "113796": 2,
+                    "CA 31352": 2,
+                    "345763": 2,
+                    "113806": 2
+                }
+            }
+        },
+        "fare": {
+            "type": "continuous",
+            "missing_count": 1,
+            "analysis": {
+                "min": 0.0,
+                "max": 512.3292,
+                "histogram": [
+                    {
+                        "bin_start": 0.0,
+                        "bin_end": 51.23292,
+                        "count": 1070
+                    },
+                    {
+                        "bin_start": 51.23292,
+                        "bin_end": 102.46584,
+                        "count": 154
+                    },
+                    {
+                        "bin_start": 102.46584,
+                        "bin_end": 153.69876,
+                        "count": 42
+                    },
+                    {
+                        "bin_start": 153.69876,
+                        "bin_end": 204.93168,
+                        "count": 4
+                    },
+                    {
+                        "bin_start": 204.93168,
+                        "bin_end": 256.1646,
+                        "count": 21
+                    },
+                    {
+                        "bin_start": 256.1646,
+                        "bin_end": 307.39752,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 307.39752,
+                        "bin_end": 358.63044,
+                        "count": 0
+                    },
+                    {
+                        "bin_start": 358.63044,
+                        "bin_end": 409.86336,
+                        "count": 0
+                    },
+                    {
+                        "bin_start": 409.86336,
+                        "bin_end": 461.09628,
+                        "count": 0
+                    },
+                    {
+                        "bin_start": 461.09628,
+                        "bin_end": 512.3292,
+                        "count": 4
+                    }
+                ]
+            }
+        },
+        "cabin": {
+            "type": "categorical",
+            "missing_count": 1014,
+            "analysis": {
+                "distinct_count": 186,
+                "value_frequencies": {
+                    "None": 1014,
+                    "C23 C25 C27": 6,
+                    "G6": 5,
+                    "B57 B59 B63 B66": 5,
+                    "C78": 4,
+                    "F2": 4,
+                    "C22 C26": 4,
+                    "B96 B98": 4,
+                    "D": 4,
+                    "F4": 4,
+                    "F33": 4,
+                    "B58 B60": 3,
+                    "B51 B53 B55": 3,
+                    "E101": 3,
+                    "E34": 3,
+                    "C101": 3,
+                    "A34": 3,
+                    "C6": 2,
+                    "E44": 2,
+                    "D28": 2,
+                    "F G73": 2,
+                    "B22": 2,
+                    "D21": 2,
+                    "E31": 2,
+                    "C31": 2,
+                    "C65": 2,
+                    "E33": 2,
+                    "D20": 2,
+                    "E8": 2,
+                    "B20": 2,
+                    "E50": 2,
+                    "C123": 2,
+                    "D37": 2,
+                    "C62 C64": 2,
+                    "C83": 2,
+                    "D35": 2,
+                    "F G63": 2,
+                    "B45": 2,
+                    "C126": 2,
+                    "D15": 2,
+                    "B18": 2,
+                    "C54": 2,
+                    "E121": 2,
+                    "C55 C57": 2,
+                    "C68": 2,
+                    "C93": 2,
+                    "E46": 2,
+                    "C124": 2,
+                    "C85": 2,
+                    "B71": 2,
+                    "B28": 2,
+                    "E67": 2,
+                    "D30": 2,
+                    "D19": 2,
+                    "E25": 2,
+                    "C86": 2,
+                    "D17": 2,
+                    "C52": 2,
+                    "B77": 2,
+                    "D33": 2,
+                    "D10 D12": 2,
+                    "B5": 2,
+                    "E24": 2,
+                    "C92": 2,
+                    "D36": 2,
+                    "C46": 2,
+                    "D26": 2,
+                    "C125": 2,
+                    "C32": 2,
+                    "C2": 2,
+                    "C7": 2,
+                    "C89": 2,
+                    "C80": 2,
+                    "B69": 2,
+                    "B35": 2,
+                    "B49": 2,
+                    "C106": 2,
+                    "B78": 2,
+                    "C116": 2,
+                    "B41": 2,
+                    "A23": 1,
+                    "B79": 1,
+                    "A9": 1,
+                    "F E69": 1,
+                    "C95": 1,
+                    "D7": 1,
+                    "B39": 1,
+                    "C128": 1,
+                    "C110": 1,
+                    "B30": 1,
+                    "C104": 1,
+                    "B50": 1,
+                    "A6": 1,
+                    "D45": 1,
+                    "C90": 1,
+                    "C45": 1,
+                    "F": 1,
+                    "C130": 1,
+                    "A19": 1,
+                    "A21": 1
+                }
+            }
+        },
+        "embarked": {
+            "type": "categorical",
+            "missing_count": 2,
+            "analysis": {
+                "distinct_count": 3,
+                "value_frequencies": {
+                    "S": 914,
+                    "C": 270,
+                    "Q": 123,
+                    "None": 2
+                }
+            }
+        },
+        "boat": {
+            "type": "categorical",
+            "missing_count": 823,
+            "analysis": {
+                "distinct_count": 27,
+                "value_frequencies": {
+                    "None": 823,
+                    "13": 39,
+                    "C": 38,
+                    "15": 37,
+                    "14": 33,
+                    "4": 31,
+                    "10": 29,
+                    "5": 27,
+                    "3": 26,
+                    "11": 25,
+                    "9": 25,
+                    "7": 23,
+                    "8": 23,
+                    "16": 23,
+                    "6": 20,
+                    "D": 20,
+                    "12": 19,
+                    "2": 13,
+                    "A": 11,
+                    "B": 9,
+                    "1": 5,
+                    "13 15": 2,
+                    "5 7": 2,
+                    "C D": 2,
+                    "15 16": 1,
+                    "5 9": 1,
+                    "13 15 B": 1,
+                    "8 10": 1
+                }
+            }
+        },
+        "body": {
+            "type": "continuous",
+            "missing_count": 1188,
+            "analysis": {
+                "min": 1,
+                "max": 328,
+                "histogram": [
+                    {
+                        "bin_start": 1.0,
+                        "bin_end": 33.7,
+                        "count": 12
+                    },
+                    {
+                        "bin_start": 33.7,
+                        "bin_end": 66.4,
+                        "count": 14
+                    },
+                    {
+                        "bin_start": 66.4,
+                        "bin_end": 99.10000000000001,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 99.10000000000001,
+                        "bin_end": 131.8,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 131.8,
+                        "bin_end": 164.5,
+                        "count": 10
+                    },
+                    {
+                        "bin_start": 164.5,
+                        "bin_end": 197.20000000000002,
+                        "count": 16
+                    },
+                    {
+                        "bin_start": 197.20000000000002,
+                        "bin_end": 229.90000000000003,
+                        "count": 5
+                    },
+                    {
+                        "bin_start": 229.90000000000003,
+                        "bin_end": 262.6,
+                        "count": 12
+                    },
+                    {
+                        "bin_start": 262.6,
+                        "bin_end": 295.3,
+                        "count": 13
+                    },
+                    {
+                        "bin_start": 295.3,
+                        "bin_end": 328,
+                        "count": 13
+                    }
+                ]
+            }
+        },
+        "home": {
+            "type": "categorical",
+            "missing_count": 564,
+            "analysis": {
+                "distinct_count": 369,
+                "value_frequencies": {
+                    "None": 564,
+                    "New York, NY": 64,
+                    "London": 14,
+                    "Montreal, PQ": 10,
+                    "Cornwall / Akron, OH": 9,
+                    "Paris, France": 9,
+                    "Wiltshire, England Niagara Falls, NY": 8,
+                    "Winnipeg, MB": 8,
+                    "Philadelphia, PA": 8,
+                    "Belfast": 7,
+                    "Sweden Winnipeg, MN": 7,
+                    "Brooklyn, NY": 7,
+                    "Haverford, PA / Cooperstown, NY": 5,
+                    "Ottawa, ON": 5,
+                    "Rotherfield, Sussex, England Essex Co, MA": 5,
+                    "Sweden Worcester, MA": 5,
+                    "Bulgaria Chicago, IL": 5,
+                    "Somerset / Bernardsville, NJ": 5,
+                    "Haverford, PA": 4,
+                    "Ireland New York, NY": 4,
+                    "Ireland Chicago, IL": 4,
+                    "Guntur, India / Benton Harbour, MI": 4,
+                    "Ruotsinphytaa, Finland New York, NY": 4,
+                    "Syria New York, NY": 4,
+                    "Paris / Montreal, PQ": 4,
+                    "San Francisco, CA": 4,
+                    "Guernsey / Elizabeth, NJ": 4,
+                    "Chicago, IL": 4,
+                    "London, England": 4,
+                    "Washington, DC": 4,
+                    "Minneapolis, MN": 4,
+                    "Paris / Haiti": 4,
+                    "Devon, England Wichita, KS": 4,
+                    "Bryn Mawr, PA": 4,
+                    "Montreal, PQ / Chesterville, ON": 4,
+                    "Bournmouth, England": 4,
+                    "Youngstown, OH": 4,
+                    "St Louis, MO": 4,
+                    "Austria": 4,
+                    "Montevideo, Uruguay": 3,
+                    "Syria Ottawa, ON": 3,
+                    "Lexington, MA": 3,
+                    "West Bromwich, England Pontiac, MI": 3,
+                    "Nice, France": 3,
+                    "Boston, MA": 3,
+                    "Milwaukee, WI": 3,
+                    "Newark, NJ": 3,
+                    "Hong Kong New York, NY": 3,
+                    "Stanton, IA": 3,
+                    "Sweden  Worcester, MA": 3,
+                    "Paris": 3,
+                    "Los Angeles, CA": 3,
+                    "Ilford, Essex / Winnipeg, MB": 3,
+                    "Bangkok, Thailand / Roseville, IL": 3,
+                    "Greenport, NY": 3,
+                    "Bishopstoke, Hants / Fayette Valley, ID": 3,
+                    "England Brooklyn, NY": 3,
+                    "Zurich, Switzerland": 3,
+                    "Ireland": 3,
+                    "Hudson, NY": 3,
+                    "Syria Kent, ON": 3,
+                    "Duluth, MN": 3,
+                    "Southampton": 3,
+                    "West Hampstead, London / Neepawa, MB": 3,
+                    "Syria": 3,
+                    "East Providence, RI": 3,
+                    "Tuxedo Park, NY": 3,
+                    "Lakewood, NJ": 3,
+                    "Cape Town, South Africa / Seattle, WA": 3,
+                    "Rochester, NY": 3,
+                    "Plymouth, Devon / Detroit, MI": 3,
+                    "Portland, OR": 3,
+                    "Elkins Park, PA": 3,
+                    "Strood, Kent, England Detroit, MI": 3,
+                    "Halifax, NS": 2,
+                    "Bromsgrove, England / Montreal, PQ": 2,
+                    "Tampico, MT": 2,
+                    "Fond du Lac, WI": 2,
+                    "Scituate, MA": 2,
+                    "Worcester, MA": 2,
+                    "Cornwall / Camden, NJ": 2,
+                    "Plymouth, England": 2,
+                    "Mt Airy, Philadelphia, PA": 2,
+                    "Little Onn Hall, Staffs": 2,
+                    "Spain / Havana, Cuba": 2,
+                    "Co Athlone, Ireland New York, NY": 2,
+                    "Calgary, AB": 2,
+                    "Basel, Switzerland": 2,
+                    "Trenton, NJ": 2,
+                    "Isleworth, England": 2,
+                    "Greenwich, CT": 2,
+                    "Cornwall / Clear Creek, CO": 2,
+                    "New York, NY / Ithaca, NY": 2,
+                    "England / Sacramento, CA": 2,
+                    "London / Paris": 2,
+                    "Elizabeth, NJ": 2,
+                    "Cornwall / Hancock, MI": 2,
+                    "London, England Norfolk, VA": 2,
+                    "Huntington, WV": 2,
+                    "New York, NY /  Stamford CT": 2
+                }
+            }
+        }
+    }
+}
