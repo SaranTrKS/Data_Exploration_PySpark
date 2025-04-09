@@ -5,11 +5,11 @@
   },
   "columns": {
     "pclass": {
-      "type": "discrete",
+      "type": "categorical",
       "missing_count": 0
     },
     "survived": {
-      "type": "discrete",
+      "type": "categorical",
       "missing_count": 0
     },
     "name": {
@@ -25,11 +25,11 @@
       "missing_count": 263
     },
     "sibsp": {
-      "type": "discrete",
+      "type": "categorical",
       "missing_count": 0
     },
     "parch": {
-      "type": "discrete",
+      "type": "categorical",
       "missing_count": 0
     },
     "ticket": {

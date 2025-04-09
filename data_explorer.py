@@ -59,7 +59,7 @@ def detect_column_types(df):
                 column_lower = column.lower()
                 categorical_hints = ['id', 'code', 'type', 'category', 'class', 'status', 'level', 'grade']
                 
-                if any(hint in column_lower for hint in categorical_hints) or distinct_count <= 5:
+                if any(hint in column_lower for hint in categorical_hints) or distinct_count / total_rows < 0.1:
                     column_types[column] = CATEGORICAL
                 else:
                     column_types[column] = DISCRETE
