@@ -91,25 +91,49 @@ def analyze_categorical_discrete(df, column):
     
     return result
 
-def analyze_continuous(df, column):
+def analyze_continuous(df, column, num_bins = 10):
     """Analyze a continuous column."""
     # Get min, max, mean, stddev
-    stats = df.select(
-        spark_min(column).alias("min"),
-        spark_max(column).alias("max"),
-        count(column).alias("count")
+    min_max = df.agg(
+        spark_min(col(column)).alias("min"),
+        spark_max(col(column)).alias("max")
     ).collect()[0]
-
-    # Get histogram (limit to 100 bins for performance)
-    histogram = df.select(column).rdd.flatMap(lambda x: x).histogram(100)
+    
+    min_val = min_max["min"]
+    max_val = min_max["max"]
 
     result = {
-        "min": stats[0],
-        "max": stats[1],
-        "count": stats[2],
-        "histogram": histogram
+        "min": min_val,
+        "max": max_val
     }
-    
+
+    if min_val is not None and max_val is not None and min_val != max_val:
+
+        try:
+            bin_width = (max_val - min_val) / num_bins
+
+            bins = []
+
+            for i in range(num_bins):
+                bin_start = min_val + i * bin_width
+                bin_end = min_val + (i + 1) * bin_width if i < num_bins - 1 else max_val
+
+                bin_count = df.filter(
+                    (col(column) >= bin_start) & (col(column) <= bin_end if i == num_bins-1 else col(column) < bin_end)
+                ).count()
+
+                bins.append(
+                    {
+                        "bin_start": bin_start,
+                        "bin_end": bin_end,
+                        "count": bin_count
+                    }
+                )
+            result["histogram"] = bins
+        except Exception as e:
+            print(f"Error creating histogram for column {column}: {e}")
+            result["histogram"] = str(e)
+
     return result
 
 def analyze_text(df, column):
@@ -158,7 +182,7 @@ def main():
 
         column_types = detect_column_types(df)
 
-        # breakpoint()
+        
         column_info = {}
         for column in df.columns:
             col_type = column_types[column]
